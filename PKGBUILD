@@ -121,7 +121,7 @@ prepare() {
 
     ### Add Liquorix patches
         local _patchfolder="${srcdir}/${_lqxpatchver}/linux-liquorix/debian/patches"
-        grep -P '^zen/' "$_patchfolder/series" | while IFS= read -r line
+        grep -P '^(zen|lqx)/' "$_patchfolder/series" | while IFS= read -r line
         do
           echo "Patching sources with $line"
           patch -Np1 -i "$_patchfolder/$line"
