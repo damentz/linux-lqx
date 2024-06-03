@@ -78,13 +78,13 @@ makedepends=(
 )
 
 if [ -n "$_htmldocs_enable" ]; then
-    makedepends+=(
-      graphviz
-      imagemagick
-      python-sphinx
-      texlive-latexextra
-      xmlto
-    )
+  makedepends+=(
+    graphviz
+    imagemagick
+    python-sphinx
+    texlive-latexextra
+    xmlto
+  )
 fi
 
 options=(
@@ -114,46 +114,46 @@ export KBUILD_BUILD_TIMESTAMP="$(date -Ru${SOURCE_DATE_EPOCH:+d @$SOURCE_DATE_EP
 prepare() {
   cd $_srcname
 
-    ### Set package version variables
-        _abiname="$(cat ${srcdir}/${_lqxpatchver}/linux-liquorix/debian/config/defines | grep 'abiname:' | sed -r 's/abiname:\s*//')"
-        _minor="$(echo "$_abiname" | cut -f1 -d -)"
-        _patchrel="$(echo "$_abiname" | cut -f2 -d -)"
+  ### Set package version variables
+  _abiname="$(cat ${srcdir}/${_lqxpatchver}/linux-liquorix/debian/config/defines | grep 'abiname:' | sed -r 's/abiname:\s*//')"
+  _minor="$(echo "$_abiname" | cut -f1 -d -)"
+  _patchrel="$(echo "$_abiname" | cut -f2 -d -)"
 
-    ### Add Liquorix patches
-        local _patchfolder="${srcdir}/${_lqxpatchver}/linux-liquorix/debian/patches"
-        grep -P '^(zen|lqx)/' "$_patchfolder/series" | while IFS= read -r line
-        do
-          echo "Patching sources with $line"
-          patch -Np1 -i "$_patchfolder/$line"
-        done
+  ### Add Liquorix patches
+  local _patchfolder="${srcdir}/${_lqxpatchver}/linux-liquorix/debian/patches"
+  grep -P '^(zen|lqx)/' "$_patchfolder/series" | while IFS= read -r line
+  do
+    echo "Patching sources with $line"
+    patch -Np1 -i "$_patchfolder/$line"
+  done
 
-    ### Setting version
-        echo "Setting version..."
-        echo "-$pkgrel" > localversion.10-pkgrel
-        echo "${pkgbase#linux}" > localversion.20-pkgname
+  ### Setting version
+  echo "Setting version..."
+  echo "-$pkgrel" > localversion.10-pkgrel
+  echo "${pkgbase#linux}" > localversion.20-pkgname
 
-    ### Patching sources
-        local src
-        for src in "${source[@]}"; do
-            src="${src%%::*}"
-            src="${src##*/}"
-            src="${src%.zst}"
-            [[ $src = *.patch ]] || continue
-        echo "Applying patch $src..."
-        patch -Np1 < "../$src"
-        done
+  ### Patching sources
+  local src
+  for src in "${source[@]}"; do
+      src="${src%%::*}"
+      src="${src##*/}"
+      src="${src%.zst}"
+      [[ $src = *.patch ]] || continue
+  echo "Applying patch $src..."
+  patch -Np1 < "../$src"
+  done
 
-    ### Setting config
-        echo "Setting config..."
-        cat ${srcdir}/${_lqxpatchver}/linux-liquorix/debian/config/kernelarch-x86/config-arch-64 >./.config
-        make olddefconfig
-        diff -u ${srcdir}/${_lqxpatchver}/linux-liquorix/debian/config/kernelarch-x86/config-arch-64 .config || :
+  ### Setting config
+  echo "Setting config..."
+  cat ${srcdir}/${_lqxpatchver}/linux-liquorix/debian/config/kernelarch-x86/config-arch-64 >./.config
+  make olddefconfig
+  diff -u ${srcdir}/${_lqxpatchver}/linux-liquorix/debian/config/kernelarch-x86/config-arch-64 .config || :
 
-    ### Prepared version
-        make -s kernelrelease > version
-        echo "Prepared $pkgbase version $(<version)"
+  ### Prepared version
+  make -s kernelrelease > version
+  echo "Prepared $pkgbase version $(<version)"
 
-    ### Optionally use running kernel's config
+  ### Optionally use running kernel's config
 	# code originally by nous; http://aur.archlinux.org/packages.php?ID=40191
 	if [ -n "$_use_current" ]; then
 		if [[ -s /proc/config.gz ]]; then
@@ -168,7 +168,7 @@ prepare() {
 		fi
 	fi
 
-    ### Selecting the CPU scheduler
+  ### Selecting the CPU scheduler
 	if [ "$_projectc" = "bmq" ]; then
 		echo "Selecting BMQ CPU scheduler..."
 		scripts/config -e CONFIG_SCHED_BMQ
@@ -190,35 +190,35 @@ prepare() {
 		exit
 	fi
 
-    ### Optionally load needed modules for the make localmodconfig
-        # See https://aur.archlinux.org/packages/modprobed-db
-        if [ -n "$_localmodcfg" ]; then
-            if [ -f $HOME/.config/modprobed.db ]; then
-            echo "Running Steven Rostedt's make localmodconfig now"
-            make LSMOD=$HOME/.config/modprobed.db localmodconfig
-        else
-            echo "No modprobed.db data found"
-            exit
-            fi
-        fi
+  ### Optionally load needed modules for the make localmodconfig
+  # See https://aur.archlinux.org/packages/modprobed-db
+  if [ -n "$_localmodcfg" ]; then
+    if [ -f $HOME/.config/modprobed.db ]; then
+      echo "Running Steven Rostedt's make localmodconfig now"
+      make LSMOD=$HOME/.config/modprobed.db localmodconfig
+    else
+      echo "No modprobed.db data found"
+      exit
+    fi
+  fi
 
-    ## Use DWARF5 debug info for Arch
+  ## Use DWARF5 debug info for Arch
   echo "Upgrading debug info from toolchain default to DWARF v5..."
   scripts/config -e CONFIG_DEBUG_INFO_DWARF5
 
-    ### Running make nconfig
+  ### Running make nconfig
 	[[ -z "$_makenconfig" ]] ||  make nconfig
 
-    ### Running make menuconfig
+  ### Running make menuconfig
 	[[ -z "$_makemenuconfig" ]] || make menuconfig
 
-    ### Running make xconfig
+  ### Running make xconfig
 	[[ -z "$_makexconfig" ]] || make xconfig
 
-    ### Running make gconfig
+  ### Running make gconfig
 	[[ -z "$_makegconfig" ]] || make gconfig
 
-    ### Save configuration for later reuse
+  ### Save configuration for later reuse
 	cat .config > "${startdir}/config.last"
 }
 
@@ -345,8 +345,8 @@ _package-headers() {
 }
 
 _package-docs() {
-    pkgdesc="Documentation for the $pkgdesc kernel"
-    depends=('linux-lqx')
+  pkgdesc="Documentation for the $pkgdesc kernel"
+  depends=('linux-lqx')
 
   cd $_srcname
   local builddir="$pkgdir/usr/lib/modules/$(<version)/build"
