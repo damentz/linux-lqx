@@ -206,6 +206,11 @@ prepare() {
   echo "Upgrading debug info from toolchain default to DWARF v5..."
   scripts/config -e CONFIG_DEBUG_INFO_DWARF5
 
+  ## Use Arch Wiki TOMOYO configuration: https://wiki.archlinux.org/title/TOMOYO_Linux#Installation_2
+  echo "Replacing Debian TOMOYO configuration with upstream Arch Linux..."
+  scripts/config --set-str CONFIG_SECURITY_TOMOYO_POLICY_LOADER      "/usr/bin/tomoyo-init"
+  scripts/config --set-str CONFIG_SECURITY_TOMOYO_ACTIVATION_TRIGGER "/usr/lib/systemd/systemd"
+
   ### Running make nconfig
 	[[ -z "$_makenconfig" ]] ||  make nconfig
 
