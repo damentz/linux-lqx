@@ -211,6 +211,10 @@ prepare() {
   scripts/config --set-str CONFIG_SECURITY_TOMOYO_POLICY_LOADER      "/usr/bin/tomoyo-init"
   scripts/config --set-str CONFIG_SECURITY_TOMOYO_ACTIVATION_TRIGGER "/usr/lib/systemd/systemd"
 
+  ## Add landlock for pacman sandbox support
+  echo "Adding 'landlock' to CONFIG_LSM for pacman sandbox support"
+  scripts/config --set-str CONFIG_LSM "landlock,lockdown,yama,bpf"
+
   ### Running make nconfig
 	[[ -z "$_makenconfig" ]] ||  make nconfig
 
