@@ -133,14 +133,9 @@ prepare() {
   echo "${pkgbase#linux}" > localversion.20-pkgname
 
   ### Patching sources
-  local src
-  for src in "${source[@]}"; do
-      src="${src%%::*}"
-      src="${src##*/}"
-      src="${src%.zst}"
-      [[ $src = *.patch ]] || continue
-  echo "Applying patch $src..."
-  patch -Np1 < "../$src"
+  for p in $(find ../../ -maxdepth 1 -name '*.patch'); do
+    echo "Applying patch $p..."
+    patch -Np1 -i "$p"
   done
 
   ### Setting config
