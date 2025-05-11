@@ -1,7 +1,7 @@
 pkgbase = linux-lqx
 	pkgdesc = Linux Liquorix
 	pkgver = 6.14.6.lqx1
-	pkgrel = 2
+	pkgrel = 3
 	url = https://liquorix.net/
 	arch = x86_64
 	license = GPL-2.0-only
@@ -14,6 +14,8 @@ pkgbase = linux-lqx
 	makedepends = perl
 	makedepends = python
 	makedepends = rust
+	makedepends = rust-src
+	makedepends = rust-bindgen
 	makedepends = tar
 	makedepends = xz
 	makedepends = zstd
