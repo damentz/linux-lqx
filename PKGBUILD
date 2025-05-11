@@ -72,6 +72,7 @@ makedepends=(
   pahole
   perl
   python
+  rust
   tar
   xz
   zstd
