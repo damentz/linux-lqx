@@ -73,6 +73,8 @@ makedepends=(
   perl
   python
   rust
+  rust-src
+  rust-bindgen
   tar
   xz
   zstd
