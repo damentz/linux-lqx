@@ -1,7 +1,7 @@
 pkgbase = linux-lqx
 	pkgdesc = Linux Liquorix
 	pkgver = 6.18.13.lqx1
-	pkgrel = 1
+	pkgrel = 2
 	url = https://liquorix.net/
 	arch = x86_64
 	license = GPL-2.0-only
@@ -39,16 +39,17 @@ pkgname = linux-lqx
 	optdepends = linux-firmware: firmware images needed for some devices
 	optdepends = sof-firmware: firmware images needed for Sound Open Firmware capable devices
 	optdepends = modprobed-db: Keeps track of EVERY kernel module that has ever been probed - useful for those of us who make localmodconfig
-	optdepends = uksmd: Userspace KSM helper daemon
+	provides = KSMBD-MODULE
+	provides = NTSYNC-MODULE
 	provides = VIRTUALBOX-GUEST-MODULES
 	provides = WIREGUARD-MODULE
-	provides = UKSMD-BUILTIN
 	provides = VHBA-MODULE
 
 pkgname = linux-lqx-headers
 	pkgdesc = Headers and scripts for building modules for the Linux Liquorix kernel
 	depends = linux-lqx
 	depends = pahole
+	provides = LINUX-HEADERS
 
 pkgname = linux-lqx-docs
 	pkgdesc = Documentation for the Linux Liquorix kernel
