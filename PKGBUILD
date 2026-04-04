@@ -136,7 +136,7 @@ prepare() {
   echo "${pkgbase#linux}" > localversion.20-pkgname
 
   ### Patching sources
-  for p in $(find ../../ -maxdepth 1 -name '*.patch'); do
+  for p in $(find ../../ -maxdepth 1 -name '*.patch' | sort); do
     echo "Applying patch $p..."
     patch -Np1 -i "$p"
   done
